@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load article_tags %}
+
+{% block sidebar %}
+<ul>
+    <li><a href="/articles/all">Articles</a></li>
+    <li><a href="/articles/create">Create Article</a></li>
+</ul>
+
+<h3>Search</h3>
+{% csrf_token %}
+<input type="text" id="search" name="search" />
+
+<ul id="search-results">
+
+</ul>
+
+{% endblock %}
+
+{% block content %}
+
+<h2>Language is: {{language}}</h2>
+
+<h2>Session Language is: {{session_language}}</h2>
+
+{% if articles.count > 0 %}
+
+{% for article in articles %}
+    {% if article.approved %}
+    <div>
+    <h2><a href="/articles/get/{{ article.id }}/">{{ article.title }}</a></h2>
+    <p>{{ article.body|lower|article_shorten_body:50 }}</p>
+    <p>{{article.likes}} people liked this article</a></p>
+    </div>
+    {% endif %}
+{% endfor %}
+
+{% else %}
+
+<p>None to show!</p>
+
+{% endif %}
+
+{% endblock %}
